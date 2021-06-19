@@ -1,3 +1,4 @@
+from users.models import Students
 from django.http.response import HttpResponse
 from django.shortcuts import render
 
@@ -8,8 +9,30 @@ def login(request):
     if m == "GET":
         return render(request, 'login.html')
     else:
-        return HttpResponse('Login')
+        name = request.POST.get('uname', '')
+        pwd = request.POST.get('pwd', '')
+
+        if name and pwd:
+            c = Students.objects.filter(uname=name, upwd=pwd).count()
+            if c == 1:
+                return HttpResponse('Login Success')
+        
+        return HttpResponse('Login Failed')
 
 
 def register(request):
-    return HttpResponse('Register')
+    m = request.method
+
+    if m == "GET":
+        return render(request, 'register.html')
+    else:
+        name = request.POST.get('uname', '')
+        pwd = request.POST.get('pwd', '')
+
+        if name and pwd:
+            u = Students(uname=name, upwd=pwd)
+            u.save()
+
+            return HttpResponse('Register Success')
+        
+        return HttpResponse('Regsiter Failed')
