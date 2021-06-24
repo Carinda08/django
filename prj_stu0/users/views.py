@@ -36,3 +36,10 @@ def register(request):
             return HttpResponse('Register Success')
         
         return HttpResponse('Regsiter Failed')
+
+
+def students(request):
+    #* 1 get data from students table
+    stus = Students.objects.all()
+
+    return render(request, 'show.html', {'dics':stus})
