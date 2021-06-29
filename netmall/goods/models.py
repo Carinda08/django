@@ -63,3 +63,40 @@ class Inventory(models.Model):
         return u'Inventory%s'%self.name
         
 
+class BookInfo(models.Model):
+    title = models.CharField(max_length=20, verbose_name='Title')
+    date = models.DateField(verbose_name='Date')
+    readCnt = models.IntegerField(default=0, verbose_name='TotalRead')
+    cmntCnt = models.IntegerField(default=0, verbose_name='TotalComment')
+    is_del = models.BooleanField(default=0, verbose_name='isDel')
+
+    def __str__(self) -> str:
+        return u'BookInfo_%s'%self.title
+
+    class Meta:
+        db_table = 'tb_BookInfo'
+        managed = True
+        verbose_name = 'BookInfo'
+        verbose_name_plural = 'BookInfo'
+
+
+class HeroInfo(models.Model):
+    Gender_Choice = (
+        (0, 'female'),
+        (1, 'male')
+    )
+
+    name = models.CharField(max_length=20, verbose_name='Name')
+    gender = models.SmallIntegerField(choices=Gender_Choice, default=0, verbose_name="Gender")
+    cmnt = models.CharField(max_length=200, null=True, verbose_name="Comment")
+    book = models.ForeignKey(BookInfo, on_delete=models.CASCADE, verbose_name="inBook")
+
+    def __str__(self) -> str:
+        return u'HeroInfo_%s'%self.name
+
+    class Meta:
+        db_table = 'tb_HeroInfo'
+        managed = True
+        verbose_name = 'HeroInfo'
+        verbose_name_plural = 'HeroInfo'
+
